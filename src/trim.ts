@@ -1,4 +1,4 @@
-type TrimLeft<T extends string> = T extends ` ${infer First}` ? TrimLeft<`${First}`> : T
+type TrimLeft<T extends string> = T extends ` ${infer Last}` ? TrimLeft<`${Last}`> : T
 
 type TrimRight<T extends string> = T extends `${infer First} ` ? TrimRight<`${First}`> : T
 
