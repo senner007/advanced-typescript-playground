@@ -57,9 +57,40 @@ const objIncorrect = { ...objCorrect, numeral: ["V", "V"] } as const satisfies I
 const numeralsVerified: VerifyNumerals<typeof objCorrect, typeof objCorrect['chords'], typeof objCorrect['bass'], typeof objCorrect['numeral']> = objCorrect
 
 // Compile error!
-// "V should have been I in: " & {
+// "Numeral V should have been I in: " & {
+//     readonly numeral: readonly ["V", "V"];
 //     readonly chords: readonly ["I", "V6"];
 //     readonly bass: readonly ["C3", "G3"];
-//     readonly numeral: readonly ["V", "V", "V"];
 // }
 const numeralsIncorrect: VerifyNumerals<typeof objIncorrect, typeof objIncorrect['chords'], typeof objIncorrect['bass'], typeof objIncorrect['numeral']> = objIncorrect
+
+
+// Example with array of objects 
+const arrayCorrect =  [{
+    chords: ["I", "V6"],
+    bass: ["C3", "G3"],
+    numeral: ["I", "V"]
+},{
+    chords: ["I", "V6"],
+    bass: ["C3", "G3"],
+    numeral: ["V", "V"] // V should have been I
+},{
+    chords: ["I", "V6"],
+    bass: ["C3", "G3"],
+    numeral: ["I", "V"]
+}] as const satisfies readonly IObj[]
+
+// Recurse over all elements in array ( could be made generic )
+type VerifyNumeralsArray<T extends readonly any[], TCopy = T> = T extends readonly [infer First extends IObj, ...infer Rest] 
+    ? First extends VerifyNumerals<First, First['chords'], First['bass'], First['numeral']> 
+        ? VerifyNumeralsArray<Rest, TCopy>
+        : VerifyNumerals<First, First['chords'], First['bass'], First['numeral']>
+    : TCopy
+
+// Compile error!
+// "Numeral V should have been I in: " & {
+//     readonly chords: readonly ["I", "V6"];
+//     readonly bass: readonly ["C3", "G3"];
+//     readonly numeral: readonly ["V", "V"];
+// }
+const arrayNumeralsVerified: VerifyNumeralsArray<typeof arrayCorrect> = arrayCorrect
