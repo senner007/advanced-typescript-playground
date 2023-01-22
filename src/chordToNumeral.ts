@@ -1,4 +1,5 @@
 import type { Equal, Expect } from '@type-challenges/utils'
+import { UniqueArray } from './uniqueArray'
 
 type baseNotes = "C" | "G"
 type baseNoteOctave = `${baseNotes}${octave}`
@@ -6,15 +7,20 @@ type numerals = 'I' | 'I6' | 'I64' | 'V' | 'V6' | 'V64'
 type octave = 2 | 3 | 4 | 5
 type bassAndChord = `${baseNoteOctave}${numerals}`
 
-// Constrain the NumeralsDict type entries.
+// Constrain the NumeralsDict type entries. Check Chords array elements for uniqueness
 type NumeralsDictConstraint<T> = {
-    [K in keyof T as K extends numerals ? K : never]: T[K] extends bassAndChord ? T[K] : never
+    [K in keyof T as K extends numerals ? K : never]: T[K] extends { Bass: `${baseNoteOctave}`,  Chords : numerals[] } 
+        ? UniqueArray<T[K]['Chords']> extends Readonly<T[K]['Chords']>
+            ? T[K]
+        : never
+    : never
 }
 
 type NumeralsDict = {
-    "I": `C${octave}${'I' | 'I6' | 'I64'}`
-    "V": `G${octave}${'V' | 'V6' | 'V64'}`
+    "I": { Bass: `C${octave}`,  Chords : ['I' , 'I6' , 'I64'] }
+    "V": { Bass : `G${octave}`, Chords : ['V' , 'V6' , 'V64'] }
 }
+
 
 type cases = [
     Expect<Equal<NumeralsDict, NumeralsDictConstraint<NumeralsDict>>>
@@ -28,7 +34,7 @@ interface IObj {
 
 // Type to ensure that the supplied numeral matches the chord and bass
 type GetCorrectNumeral<Bass extends string, Chord extends string> = {
-    [Key in keyof NumeralsDict]: `${Bass}${Chord}` extends NumeralsDict[Key] ? Key : never
+    [Key in keyof NumeralsDict]: `${Bass}${Chord}` extends `${NumeralsDict[Key]['Bass']}${NumeralsDict[Key]['Chords'][number]}` ? Key : never
 }[keyof NumeralsDict]
 
 // Recurse over all elements in property arrays
@@ -52,7 +58,7 @@ type VerifyNumerals<T extends object, Chords extends readonly any[], Basses exte
 // WORKING examples:
 /*********************************************************************** */
 const objCorrect = {
-    chords: ["I", "V6"],
+    chords: ["I6", "V6"],
     bass: ["C3", "G3"],
     numeral: ["I", "V"]
 } as const satisfies IObj
