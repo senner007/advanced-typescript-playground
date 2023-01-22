@@ -43,20 +43,27 @@ type VerifyNumerals<T extends object, Chords extends readonly any[], Basses exte
         : never
     : T
 
+    
+/*********************************************************************** */
 // Examples : 
+/*********************************************************************** */
 
+/*********************************************************************** */
+// WORKING examples:
+/*********************************************************************** */
 const objCorrect = {
     chords: ["I", "V6"],
     bass: ["C3", "G3"],
     numeral: ["I", "V"]
 } as const satisfies IObj
-
-const objIncorrect = { ...objCorrect, numeral: ["V", "V"] } as const satisfies IObj
-
 // Works
 const numeralsVerified: VerifyNumerals<typeof objCorrect, typeof objCorrect['chords'], typeof objCorrect['bass'], typeof objCorrect['numeral']> = objCorrect
 
-// Compile error!
+/*********************************************************************** */
+// COMPILE ERROR examples:
+/*********************************************************************** */
+
+const objIncorrect = { ...objCorrect, numeral: ["V", "V"] } as const satisfies IObj
 // "Numeral V should have been I in: " & {
 //     readonly numeral: readonly ["V", "V"];
 //     readonly chords: readonly ["I", "V6"];
@@ -87,7 +94,6 @@ type VerifyNumeralsArray<T extends readonly any[], TCopy = T> = T extends readon
         : VerifyNumerals<First, First['chords'], First['bass'], First['numeral']>
     : TCopy
 
-// Compile error!
 // "Numeral V should have been I in: " & {
 //     readonly chords: readonly ["I", "V6"];
 //     readonly bass: readonly ["C3", "G3"];
