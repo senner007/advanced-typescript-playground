@@ -66,7 +66,7 @@ const objCorrect = {
 const numeralsVerified: VerifyNumerals<typeof objCorrect, typeof objCorrect['chords'], typeof objCorrect['bass'], typeof objCorrect['numeral']> = objCorrect
 
 /*********************************************************************** */
-// COMPILE ERROR examples:
+// COMPILATION ERROR examples:
 /*********************************************************************** */
 
 const objIncorrect = { ...objCorrect, numeral: ["V", "V"] } as const satisfies IObj
