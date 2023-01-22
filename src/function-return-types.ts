@@ -18,7 +18,9 @@ function returnConditional(stringOrNumber: string | number): string | number {
   return typeof stringOrNumber === 'string' ? 'foo' : 42
 }
 
-// Examples:
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
 
 let x : string | number = 42
 let y : string | number = "foo"

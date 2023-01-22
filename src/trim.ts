@@ -4,4 +4,8 @@ type TrimRight<T extends string> = T extends `${infer First} ` ? TrimRight<`${Fi
 
 type Trim<T extends string> =  TrimLeft<TrimRight<T>>
 
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
+
 type trimmed = Trim<"   d s  "> // "d s"

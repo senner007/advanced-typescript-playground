@@ -51,8 +51,10 @@ type SameLengthGeneric<
     }
   : TCopy;
 
-
-// Examples
+  
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
 
 type CatsAndDogs = { cats: readonly string[]; dogs: readonly string[] };
 

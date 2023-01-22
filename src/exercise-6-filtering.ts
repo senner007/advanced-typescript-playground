@@ -90,6 +90,10 @@ function filterPersonsAlternate(persons: Person[], personType: string, criteria:
         });
 }
 
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
+
 const usersOfAge23 = filterPersons(persons, 'user', { age: 23 }); // User[]
 const adminsOfAge23 = filterPersons(persons, 'admin', { age: 23 }); // Admin[]
 

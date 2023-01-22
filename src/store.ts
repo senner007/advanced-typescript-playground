@@ -49,6 +49,10 @@ class Store {
     }
 }
 
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
+
 const store = new Store();
 const books = store.getAll('book')
 store.create('book', new Book('some author'));

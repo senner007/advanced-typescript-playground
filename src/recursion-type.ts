@@ -15,6 +15,11 @@ function objectRecursion<TTimes extends number>(prop: string, nTimes: TTimes): n
   }
 }
 
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
+
+
 const fooObject: { // Works
   "foo": {
     "foo": 0
