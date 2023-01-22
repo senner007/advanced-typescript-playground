@@ -6,7 +6,7 @@ type numerals = 'I' | 'I6' | 'I64' | 'V' | 'V6' | 'V64'
 type octave = 2 | 3 | 4 | 5
 type bassAndChord = `${baseNoteOctave}${numerals}`
 
-// Constain the NumeralsDict type entries.
+// Constrain the NumeralsDict type entries.
 type NumeralsDictConstraint<T> = {
     [K in keyof T as K extends numerals ? K : never]: T[K] extends bassAndChord ? T[K] : never
 }
@@ -31,7 +31,7 @@ type GetCorrectNumeral<Bass extends string, Chord extends string> = {
     [Key in keyof NumeralsDict]: `${Bass}${Chord}` extends NumeralsDict[Key] ? Key : never
 }[keyof NumeralsDict]
 
-// Recurse over all elements in array
+// Recurse over all elements in property arrays
 type VerifyNumerals<T extends object, Chords extends readonly any[], Basses extends readonly any[], Numerals extends readonly any[]> =
     Chords extends readonly [infer FirstChord extends string, ...infer ChordsRest extends any[]]
         ? Basses extends readonly [infer FirstBass extends string, ...infer BassesRest extends any[]]
