@@ -40,5 +40,5 @@ type IsCorrectCountArray<T extends readonly any[], TCopy = T> = T extends readon
 const correct: IsCorrectCountArray<typeof arrCorrect> = arrCorrect
 
 // Compile error:
-"Property of c contains incorrect value. Value is 7 and should have been 6"
+// "Property of c contains incorrect value. Value is 7 and should have been 6"
 const incorrect: IsCorrectCountArray<typeof arrIncorrect> = arrIncorrect
