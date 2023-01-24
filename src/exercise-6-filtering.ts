@@ -90,6 +90,29 @@ function filterPersonsAlternate(persons: Person[], personType: string, criteria:
         });
 }
 
+
+// Alternative soultion with two functions
+function isUser(person: Person): person is User {
+    return person.type === "user"
+}
+
+function isAdmin(person: Person): person is Admin {
+    return person.type === "admin"
+}
+
+function filterFunc<T>(persons: T[], criteria: Partial<T>) {
+    return persons.filter(person => {
+        let criteriaKeys = getObjectKeys(criteria);
+        return criteriaKeys.every((fieldName) => {
+            return person[fieldName] === criteria[fieldName];
+        });
+    })
+}
+
+const filterPersonsUser = (persons: Person[], criteria: Partial<User>) => filterFunc(persons.filter(isUser), criteria)
+const filterPersonsAdmin = (persons: Person[], criteria: Partial<Admin>) => filterFunc(persons.filter(isAdmin), criteria)
+
+
 /*********************************************************************** */
 // Examples : 
 /*********************************************************************** */
@@ -102,6 +125,14 @@ usersOfAge23.forEach(logPerson);
 
 console.log('Admins of age 23:');
 adminsOfAge23.forEach(logPerson);
+
+/*********************************************************************** */
+// Examples with 2 functions: 
+/*********************************************************************** */
+
+const users = filterPersonsUser(persons, { age: 23 }); // User[]
+const admins = filterPersonsAdmin(persons, { age: 23 }); // Admin[]
+
 
 // In case if you are stuck:
 // https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads
