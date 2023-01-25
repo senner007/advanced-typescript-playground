@@ -43,9 +43,7 @@ const animals = [
     }
 ] as const satisfies readonly Animal[]
 
-type LookUp<TObj, TValue> = TObj extends { [Key in keyof TObj]: TObj[Key] extends TValue ? never : TObj[Key] }
-    ? never
-    : TObj;
+type LookUp<U, T> = Extract<U, { type : T}>
 
 type propValues = string | number | boolean // TODO : propValues hardcoded, find better solotion
 
