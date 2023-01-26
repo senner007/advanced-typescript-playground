@@ -18,8 +18,8 @@ function func<
 
 // Works
 // first element: 1 equals last element :1
-const works = func({ a: [1, 2, 3] as const, b: [1, 1, 1] as const })
+const works = func({ a: [1, 2, 3], b: [1, 1, 1]} as const)
 
 // Compile error
 // "Error : First element does not extend last" | 1 | 2
-const error = func({ a: [1, 2, 3] as const, b: [1, 1, 2] as const })
+const error = func({ a: [1, 2, 3], b: [1, 1, 2]} as const)
