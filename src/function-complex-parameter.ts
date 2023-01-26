@@ -3,7 +3,7 @@ type FirstAndLast<TArr_A extends readonly any[], TArr_B extends readonly any[]> 
     ? TArr_B extends readonly [...infer Start, infer Last]
     ? First extends Last
     ? [TArr_A, TArr_B]
-    : First | Last | 'Error : First element does not extend last'
+    : First | Last | 'Error : First element in first array does not extend last element in last array'
     : never
     : never
 
@@ -17,7 +17,7 @@ function func<
 }
 
 // Works
-// first element: 1 equals last element : 1
+// first element in first array equals last element in last array
 const works = func([1, 2, 3] as const, [1, 1, 1] as const)
 
 // Compile error
