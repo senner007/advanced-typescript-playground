@@ -43,15 +43,15 @@ const animals = [
     }
 ] as const satisfies readonly Animal[]
 
-type LookUp<U, T> = Extract<U, { type : T}>
+type LookUp<TObj,Key extends PropertyKey, Value> = Extract<TObj, { [key in Key] : Value}>
 
 type propValues = string | number | boolean // TODO : propValues hardcoded, find better solotion
 
-function filterByType<TValue extends TObj[C], TObj extends { [key in C] : propValues }, C extends PropertyKey>(criteria : C, value: TValue,  arr: readonly TObj[]) {
-    return arr.filter((obj): obj is LookUp<TObj, TValue> => obj[criteria] === value)
+function filterByType<Value extends TObj[Key], TObj extends { [key: PropertyKey] : propValues }, Key extends PropertyKey>(key : Key, value: Value,  arr: readonly TObj[]) {
+    return arr.filter((obj): obj is LookUp<TObj,Key, Value> => obj[key] === value)
 }
 
-const foxes = filterByType("type", "fox", animals) // Narrowed to array of a single type
+const foxes = filterByType("age", 13, animals) // Narrowed to array of a single type
 
 // const foxes: {
 //     readonly type: "fox";
