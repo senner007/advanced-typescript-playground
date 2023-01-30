@@ -61,7 +61,7 @@ function filterByType<Value extends GetValues<TObj,Key>[keyof GetValues<TObj,Key
     return arr.filter((obj): obj is LookUp<TObj,Key, Value> => obj[key] === value)
 }
 
-const foxes = filterByType("type", "dog" , animals) // Narrowed to array of a single type
+const foxes = filterByType("someFoxProp", "?" , animals) // Narrowed to array of a single type
 
 // const foxes: {
 //     readonly type: "fox";
