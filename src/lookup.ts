@@ -66,6 +66,10 @@ function filterByType<
   return arr.filter((obj): obj is LookUp<TArr[number], Record<Key, Value>> => obj[key] === value);
 }
 
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
+
 const fox = filterByType("someFoxProp", "?", animals); // Narrowed to array of a single type
 
 // const foxes: {
@@ -74,3 +78,7 @@ const fox = filterByType("someFoxProp", "?", animals); // Narrowed to array of a
 //     readonly isDomestic: true;
 //     readonly someFoxProp: "?";
 // }[]
+
+// Compile error
+filterByType("foo", "?", animals); // '"foo"' is not assignable to parameter of type '"someFoxProp" | "someCatProp" | "someDogProp" | "type" | "age" | "isDomestic"'
+filterByType("type", "?", animals); // '"?"' is not assignable to parameter of type '"cat" | "dog" | "fox"'
