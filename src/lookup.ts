@@ -53,21 +53,19 @@ type GetValueByKey<T, Key extends PropertyKey> = T extends any
     }>
   : never;
 
-type allValues = GetAllValues<typeof animals[number]>; // boolean | "bark" | "fox" | "?" | "cat" | "dog" | "meow" | 23 | 33 | 13
-
 // https://stackoverflow.com/questions/61410242/is-it-possible-to-exclude-an-empty-object-from-a-union
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
 type ExcludeEmpty<T> = T extends AtLeastOne<T> ? T : never;
 
 function filterByType<
-  Key extends GetAllKeys<TObj>,
-  Value extends GetValueByKey<TObj, Key>[keyof GetValueByKey<TObj, Key>] & TObj[Key],
-  TObj extends { [key: PropertyKey]: allValues }
->(key: Key, value: Value, arr: readonly TObj[]) {
-  return arr.filter((obj): obj is LookUp<TObj, Key, Value> => obj[key] === value);
+  const Key extends GetAllKeys<TArr[number]>,
+  const Value extends GetValueByKey<TArr[number], Key>[keyof GetValueByKey<TArr[number], Key>],
+  TArr extends readonly any[]
+>(key: Key, value: Value, arr: TArr) {
+  return arr.filter((obj): obj is LookUp<TArr[number], Key, Value> => obj[key] === value);
 }
 
-const fox = filterByType("someFoxProp", "?", animals); // Narrowed to array of a single type
+const fox = filterByType("type", "fox", animals); // Narrowed to array of a single type
 
 // const foxes: {
 //     readonly type: "fox";
