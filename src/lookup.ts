@@ -1,21 +1,21 @@
 type Cat = {
   type: "cat";
   age: number;
-  isCute: boolean;
+  isDomestic: boolean;
   someCatProp: "meow";
 };
 
 type Dog = {
   type: "dog";
   age: number;
-  isCute: boolean;
+  isDomestic: boolean;
   someDogProp: "bark";
 };
 
 type Fox = {
   type: "fox";
   age: number;
-  isCute: boolean;
+  isDomestic: boolean;
   someFoxProp: "?";
 };
 
@@ -25,43 +25,44 @@ const animals = [
   {
     type: "cat",
     age: 23,
-    isCute: false,
+    isDomestic: false,
     someCatProp: "meow",
   },
   {
     type: "dog",
     age: 33,
-    isCute: false,
+    isDomestic: false,
     someDogProp: "bark",
   },
   {
     type: "fox",
     age: 13,
-    isCute: true,
+    isDomestic: true,
     someFoxProp: "?",
   },
 ] as const satisfies readonly Animal[];
 
 type LookUp<TObj, Key extends PropertyKey, Value> = Extract<TObj, { [key in Key]: Value }>;
 
-type propValues = "cat" | "dog" | "fox" | "meow" | "bark" | "?" | 23 | 13 | 33 | boolean ; // TODO : hardcoded - get all possible values
+type GetAllKeys<T> = T extends any ? keyof T : never;
+type GetAllValues<T> = T extends any ? T[keyof T] : never;
 
-type GetKey<T> = T extends any ? keyof T : never;
-type GetValues<T, Key extends PropertyKey> = T extends any
+type GetValueByKey<T, Key extends PropertyKey> = T extends any
   ? ExcludeEmpty<{
       [key in keyof T as key extends Key ? key : never]: T[key];
     }>
   : never;
 
+type allValues = GetAllValues<typeof animals[number]>; // boolean | "bark" | "fox" | "?" | "cat" | "dog" | "meow" | 23 | 33 | 13
 
 // https://stackoverflow.com/questions/61410242/is-it-possible-to-exclude-an-empty-object-from-a-union
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
 type ExcludeEmpty<T> = T extends AtLeastOne<T> ? T : never;
 
 function filterByType<
-  Key extends GetKey<TObj>,
-  Value extends GetValues<TObj, Key>[keyof GetValues<TObj, Key>] & TObj[Key],
-  TObj extends { [key: PropertyKey]: propValues }
+  Key extends GetAllKeys<TObj>,
+  Value extends GetValueByKey<TObj, Key>[keyof GetValueByKey<TObj, Key>] & TObj[Key],
+  TObj extends { [key: PropertyKey]: allValues }
 >(key: Key, value: Value, arr: readonly TObj[]) {
   return arr.filter((obj): obj is LookUp<TObj, Key, Value> => obj[key] === value);
 }
@@ -71,6 +72,6 @@ const notFoxes = filterByType("someFoxProp", "?", animals); // Narrowed to array
 // const foxes: {
 //     readonly type: "fox";
 //     readonly age: 13;
-//     readonly isCute: true;
+//     readonly isDomestic: true;
 //     readonly someFoxProp: "?";
 // }[]
