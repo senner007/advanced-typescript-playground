@@ -25,19 +25,19 @@ const animals = [
   {
     type: "cat",
     age: 23,
-    isDomestic: false,
+    isDomestic: true,
     someCatProp: "meow",
   },
   {
     type: "dog",
     age: 33,
-    isDomestic: false,
+    isDomestic: true,
     someDogProp: "bark",
   },
   {
     type: "fox",
     age: 13,
-    isDomestic: true,
+    isDomestic: false,
     someFoxProp: "?",
   },
 ] as const satisfies readonly Animal[];
@@ -67,7 +67,7 @@ function filterByType<
   return arr.filter((obj): obj is LookUp<TObj, Key, Value> => obj[key] === value);
 }
 
-const notFoxes = filterByType("someFoxProp", "?", animals); // Narrowed to array of a single type
+const fox = filterByType("someFoxProp", "?", animals); // Narrowed to array of a single type
 
 // const foxes: {
 //     readonly type: "fox";
