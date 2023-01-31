@@ -42,7 +42,7 @@ const animals = [
   },
 ] as const satisfies readonly Animal[];
 
-type LookUp<TObj, TRecord> = Extract<TObj, TRecord>;
+type LookUp<T, TRecord> = Extract<T, TRecord>;
 
 // https://stackoverflow.com/questions/61685168/is-it-possible-to-get-the-keys-from-a-union-of-objects
 type GetAllKeys<T> = T extends any ? keyof T : never;
@@ -57,11 +57,11 @@ type GetValueByKey<T, Key extends PropertyKey> = T extends any
     }>
   : never;
 
-function filterByType<
+function filterByKeyValue<
   const Key extends GetAllKeys<TArr[number]>,
-  const Value extends TValues[keyof TValues],
+  const Value extends TAllValues[keyof TAllValues],
   TArr extends readonly any[],
-  TValues = GetValueByKey<TArr[number], Key>
+  TAllValues = GetValueByKey<TArr[number], Key>
 >(key: Key, value: Value, arr: TArr) {
   return arr.filter((obj): obj is LookUp<TArr[number], Record<Key, Value>> => obj[key] === value);
 }
@@ -70,7 +70,7 @@ function filterByType<
 // Examples : 
 /*********************************************************************** */
 
-const fox = filterByType("someFoxProp", "?", animals); // Narrowed to array of a single type
+const fox = filterByKeyValue("someFoxProp", "?", animals); // Narrowed to array of a single type
 
 // const foxes: {
 //     readonly type: "fox";
@@ -80,5 +80,5 @@ const fox = filterByType("someFoxProp", "?", animals); // Narrowed to array of a
 // }[]
 
 // Compile error
-filterByType("foo", "?", animals); // '"foo"' is not assignable to parameter of type '"someFoxProp" | "someCatProp" | "someDogProp" | "type" | "age" | "isDomestic"'
-filterByType("type", "?", animals); // '"?"' is not assignable to parameter of type '"cat" | "dog" | "fox"'
+filterByKeyValue("foo", "?", animals); // '"foo"' is not assignable to parameter of type '"someFoxProp" | "someCatProp" | "someDogProp" | "type" | "age" | "isDomestic"'
+filterByKeyValue("type", "?", animals); // '"?"' is not assignable to parameter of type '"cat" | "dog" | "fox"'
