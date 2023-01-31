@@ -42,10 +42,14 @@ const animals = [
   },
 ] as const satisfies readonly Animal[];
 
-type LookUp<TObj, Key extends PropertyKey, Value> = Extract<TObj, { [key in Key]: Value }>;
+type LookUp<TObj, TRecord> = Extract<TObj, TRecord>;
 
+// https://stackoverflow.com/questions/61685168/is-it-possible-to-get-the-keys-from-a-union-of-objects
 type GetAllKeys<T> = T extends any ? keyof T : never;
-type GetAllValues<T> = T extends any ? T[keyof T] : never;
+
+// https://stackoverflow.com/questions/61410242/is-it-possible-to-exclude-an-empty-object-from-a-union
+type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
+type ExcludeEmpty<T> = T extends AtLeastOne<T> ? T : never;
 
 type GetValueByKey<T, Key extends PropertyKey> = T extends any
   ? ExcludeEmpty<{
@@ -53,19 +57,16 @@ type GetValueByKey<T, Key extends PropertyKey> = T extends any
     }>
   : never;
 
-// https://stackoverflow.com/questions/61410242/is-it-possible-to-exclude-an-empty-object-from-a-union
-type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
-type ExcludeEmpty<T> = T extends AtLeastOne<T> ? T : never;
-
 function filterByType<
   const Key extends GetAllKeys<TArr[number]>,
-  const Value extends GetValueByKey<TArr[number], Key>[keyof GetValueByKey<TArr[number], Key>],
-  TArr extends readonly any[]
+  const Value extends TValues[keyof TValues],
+  TArr extends readonly any[],
+  TValues = GetValueByKey<TArr[number], Key>
 >(key: Key, value: Value, arr: TArr) {
-  return arr.filter((obj): obj is LookUp<TArr[number], Key, Value> => obj[key] === value);
+  return arr.filter((obj): obj is LookUp<TArr[number], Record<Key, Value>> => obj[key] === value);
 }
 
-const fox = filterByType("type", "fox", animals); // Narrowed to array of a single type
+const fox = filterByType("someFoxProp", "?", animals); // Narrowed to array of a single type
 
 // const foxes: {
 //     readonly type: "fox";
