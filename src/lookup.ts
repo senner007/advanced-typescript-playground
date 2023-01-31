@@ -49,7 +49,7 @@ const animals = [
 ] as const satisfies readonly Animal[];
 
 type LookUp<T, TRecord> = Extract<T, TRecord>;
-type GetValueByKey<T extends Record<Key, unknown>, Key extends PropertyKey> = FilterByKey<T, Key>[keyof FilterByKey<T, Key>];
+type GetValueByKey<T, Key extends PropertyKey, TFilterByKey = FilterByKey<T, Key>> = TFilterByKey[keyof TFilterByKey];
 
 // https://stackoverflow.com/questions/61685168/is-it-possible-to-get-the-keys-from-a-union-of-objects
 type GetAllKeys<T> = T extends any ? keyof T : never;
@@ -75,7 +75,7 @@ function filterByKeyValue<
 /*********************************************************************** */
 
 const unicorn = filterByKeyValue("unicornProp", "?", animals); // unicorn
-const unicorns = filterByKeyValue("isDomestic", false, animals); // unicorns
+const unicorns = filterByKeyValue("isDomestic", false, animals); // unicorn[]
 const cat = filterByKeyValue("type", "cat", animals); // cat
 const dog = filterByKeyValue("age", 33, animals); // dog
 const catAndDog = filterByKeyValue("isDomestic", true, animals); // cat | dog
