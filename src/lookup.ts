@@ -2,47 +2,54 @@ type Cat = {
   type: "cat";
   age: number;
   isDomestic: boolean;
-  someCatProp: "meow";
+  catProp: "meow";
 };
 
 type Dog = {
   type: "dog";
   age: number;
   isDomestic: boolean;
-  someDogProp: "bark";
+  dogProp: "bark";
 };
 
-type Fox = {
-  type: "fox";
+type Unicorn = {
+  type: "unicorn";
   age: number;
   isDomestic: boolean;
-  someFoxProp: "?";
+  unicornProp: "?" | "other";
 };
 
-type Animal = Cat | Dog | Fox;
+type Animal = Cat | Dog | Unicorn;
 
 const animals = [
   {
     type: "cat",
     age: 23,
     isDomestic: true,
-    someCatProp: "meow",
+    catProp: "meow",
   },
   {
     type: "dog",
     age: 33,
     isDomestic: true,
-    someDogProp: "bark",
+    dogProp: "bark",
   },
   {
-    type: "fox",
+    type: "unicorn",
     age: 13,
     isDomestic: false,
-    someFoxProp: "?",
+    unicornProp: "?",
+  },
+  {
+    type: "unicorn",
+    age: 13,
+    isDomestic: false,
+    unicornProp: "other",
   },
 ] as const satisfies readonly Animal[];
 
 type LookUp<T, TRecord> = Extract<T, TRecord>;
+type GetValueByKey<T extends Record<Key, unknown>, Key extends PropertyKey> = FilterByKey<T, Key>[keyof FilterByKey<T, Key>];
 
 // https://stackoverflow.com/questions/61685168/is-it-possible-to-get-the-keys-from-a-union-of-objects
 type GetAllKeys<T> = T extends any ? keyof T : never;
@@ -57,9 +64,8 @@ type FilterByKey<T, Key extends PropertyKey> = ExcludeEmpty<{
 
 function filterByKeyValue<
   const Key extends GetAllKeys<TArr[number]>,
-  const Value extends TFilterByKey[keyof TFilterByKey],
+  const Value extends GetValueByKey<TArr[number], Key>,
   TArr extends readonly any[],
-  TFilterByKey = FilterByKey<TArr[number], Key>
 >(key: Key, value: Value, arr: TArr) {
   return arr.filter((obj): obj is LookUp<TArr[number], Record<Key, Value>> => obj[key] === value);
 }
@@ -68,19 +74,13 @@ function filterByKeyValue<
 // Examples : 
 /*********************************************************************** */
 
-const fox = filterByKeyValue("someFoxProp", "?", animals); // Narrowed to array of a single type
-const fox2 = filterByKeyValue("isDomestic", false, animals); // Narrowed to array of a single type
-const cat = filterByKeyValue("type", "cat", animals); // Narrowed to array of a single type
-const dog = filterByKeyValue("age", 33, animals); // Narrowed to array of a single type
-const catAndDog = filterByKeyValue("isDomestic", true, animals); // Narrowed to array of a single type
-
-// const foxes: {
-//     readonly type: "fox";
-//     readonly age: 13;
-//     readonly isDomestic: true;
-//     readonly someFoxProp: "?";
-// }[]
+const unicorn = filterByKeyValue("unicornProp", "?", animals); // unicorn
+const unicorns = filterByKeyValue("isDomestic", false, animals); // unicorns
+const cat = filterByKeyValue("type", "cat", animals); // cat
+const dog = filterByKeyValue("age", 33, animals); // dog
+const catAndDog = filterByKeyValue("isDomestic", true, animals); // cat | dog
 
 // Compile error
-filterByKeyValue("foo", "?", animals); // '"foo"' is not assignable to parameter of type '"someFoxProp" | "someCatProp" | "someDogProp" | "type" | "age" | "isDomestic"'
-filterByKeyValue("type", "?", animals); // '"?"' is not assignable to parameter of type '"cat" | "dog" | "fox"'
+filterByKeyValue("foo", "?", animals); // '"foo"' is not assignable to parameter of type '"unicornProp" | "catProp" | "dogProp" | "type" | "age" | "isDomestic"'
+filterByKeyValue("type", "?", animals); // '"?"' is not assignable to parameter of type '"cat" | "dog" | "unicorn"'
+filterByKeyValue("unicornProp", "fdsdf", animals); // '"fdsdf"' is not assignable to parameter of type '"?" | "other"'
