@@ -51,17 +51,15 @@ type GetAllKeys<T> = T extends any ? keyof T : never;
 type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U];
 type ExcludeEmpty<T> = T extends AtLeastOne<T> ? T : never;
 
-type GetValueByKey<T, Key extends PropertyKey> = T extends any
-  ? ExcludeEmpty<{
+type FilterByKey<T, Key extends PropertyKey> = ExcludeEmpty<{
       [key in keyof T as key extends Key ? key : never]: T[key];
     }>
-  : never;
 
 function filterByKeyValue<
   const Key extends GetAllKeys<TArr[number]>,
-  const Value extends TAllValues[keyof TAllValues],
+  const Value extends TFilterByKey[keyof TFilterByKey],
   TArr extends readonly any[],
-  TAllValues = GetValueByKey<TArr[number], Key>
+  TFilterByKey = FilterByKey<TArr[number], Key>
 >(key: Key, value: Value, arr: TArr) {
   return arr.filter((obj): obj is LookUp<TArr[number], Record<Key, Value>> => obj[key] === value);
 }
@@ -71,6 +69,10 @@ function filterByKeyValue<
 /*********************************************************************** */
 
 const fox = filterByKeyValue("someFoxProp", "?", animals); // Narrowed to array of a single type
+const fox2 = filterByKeyValue("isDomestic", false, animals); // Narrowed to array of a single type
+const cat = filterByKeyValue("type", "cat", animals); // Narrowed to array of a single type
+const dog = filterByKeyValue("age", 33, animals); // Narrowed to array of a single type
+const catAndDog = filterByKeyValue("isDomestic", true, animals); // Narrowed to array of a single type
 
 // const foxes: {
 //     readonly type: "fox";
