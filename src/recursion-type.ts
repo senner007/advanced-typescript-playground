@@ -9,7 +9,7 @@ function recursionWrapper<TPropName extends string, TTimes extends number>(prop:
 
 // Javascript recursion
 function objectRecursion<TTimes extends number>(prop: string, nTimes: TTimes): number | object {
-  if (nTimes === 0) return nTimes;
+  if (nTimes === 0) return { foo : 0};
   return {
     [prop]: objectRecursion(prop, nTimes - 1)
   }
