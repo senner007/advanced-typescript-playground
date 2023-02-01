@@ -111,7 +111,7 @@ function filterBy<
 // Examples : 
 /*********************************************************************** */
 {
-const unicorn = filterBy(animals).filter("type", "unicorn").filter("unicornProp", "other").result // unicorn[]
+const unicorn = filterBy(animals).filter("type", "unicorn").filter("unicornProp", "other").result // unicorn
 
 // Compile error
 const result = filterBy(animals).filter("dogProp", "bark").filter("unicornProp", "other").result 
