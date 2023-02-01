@@ -84,3 +84,38 @@ const catAndDog = filterByKeyValue("isDomestic", true, animals); // cat | dog
 filterByKeyValue("foo", "?", animals); // '"foo"' is not assignable to parameter of type '"unicornProp" | "catProp" | "dogProp" | "type" | "age" | "isDomestic"'
 filterByKeyValue("type", "?", animals); // '"?"' is not assignable to parameter of type '"cat" | "dog" | "unicorn"'
 filterByKeyValue("unicornProp", "fdsdf", animals); // '"fdsdf"' is not assignable to parameter of type '"?" | "other"'
+
+
+/*********************************************************************** */
+// Expanded version using javascript recursion to do multiple filtering : 
+/*********************************************************************** */
+
+
+function filterBy<
+  TArr extends readonly any[],
+  >(arr: TArr) {
+    function filterByKeyValue<
+      const Key extends GetAllKeys<TArr[number]>,
+      const Value extends GetValueByKey<TArr[number], Key>,
+    >(key: Key, value: Value) {
+      return filterBy(arr.filter((obj): obj is LookUp<TArr[number], Record<Key, Value>> => obj[key] === value))
+    }
+    
+    return {
+      filter: filterByKeyValue,
+      result: arr
+    }
+}
+
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
+{
+const unicorn = filterBy(animals).filter("type", "unicorn").filter("unicornProp", "other").result // unicorn[]
+
+// Compile error
+const result = filterBy(animals).filter("dogProp", "bark").filter("unicornProp", "other").result 
+// '"unicornProp"' is not assignable to parameter of type '"dogProp" | "type" | "age" | "isDomestic"'
+}
+
+
