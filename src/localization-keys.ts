@@ -45,9 +45,9 @@ type objectsAreIdentical<T extends JsonData> = optionalPropertiesFound extends n
 // Part 2: Type validate that non-common words exist only in departments and in all departments  
 //
 // Solution is to first get all keys in departments.
-// Next we get get the keys of that only exist in some departments but not all
+// Next we get get the keys that only exist in some departments but not all.
 // By excluding those from all department keys we can get the keys that exist in all departments.
-// Now we can check that these non-common keys do not exist under common. 
+// Now we can check that these non-common keys (existing in all departments) do not exist under common. 
 /*********************************************************************** */
 
 type DepartmentAllKeys<T extends keyof JsonDataDepartments> = T extends any 
