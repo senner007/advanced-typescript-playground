@@ -10,6 +10,7 @@ import jsonData from "../localization-data.json"
 // Each word can exist only in the common object without a department specific translation
 // Each word can have additional department specific translations.
 // Words that are translated differently in every single department are not included in the common object. 
+// The values of the keys are unimportant
 /*********************************************************************** */ 
 
 type JsonData = typeof jsonData[number];
