@@ -56,11 +56,11 @@ type DepartmentAllKeys<T extends keyof JsonDataDepartments> = T extends any
 
 type departmentAllKeys = DepartmentAllKeys<keyof JsonDataDepartments>
 
-type PartialDepartmentKeys<T extends keyof JsonDataDepartments, Keys = departmentAllKeys> = Keys extends keyof JsonDataDepartments[T] 
+type DepartmentKeys<T extends keyof JsonDataDepartments, Keys = departmentAllKeys> = Keys extends keyof JsonDataDepartments[T] 
       ? never 
       : Keys
   
-type departmentKeys = PartialDepartmentKeys<keyof JsonDataDepartments>;
+type departmentKeys = DepartmentKeys<keyof JsonDataDepartments>;
 
 type DepartMentKeysInCommon<T extends JsonData, Keys extends departmentKeys = departmentKeys> = Keys extends keyof JsonData['common'] 
   ? T 
@@ -68,7 +68,7 @@ type DepartMentKeysInCommon<T extends JsonData, Keys extends departmentKeys = de
 
 type nonCommonKeys = Exclude<departmentAllKeys, departmentKeys>;
 
-type NonCommonKeysInCommon<T> = T extends keyof JsonData['common'] ? `Error: the key: '${T}' exists in all departments and under common` : JsonData
+type NonCommonKeysInCommon<T> = T extends keyof JsonData['common'] ? `Error: the key: '${T}' exists in all departments but also under common` : JsonData
 
 /*********************************************************************** */
 // Lastly we have a type to validate the json
