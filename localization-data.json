@@ -1,0 +1,46 @@
+[{ 
+  "language" : "eng",
+  "common": {
+    "word" : "word",
+    "otherWord" : "otherWord",
+    "commonWord" : "commonWord"
+  },
+  "departments" : {
+    "foo" : {
+      "word" : "word",
+      "nonCommon" : "nonCommon"
+    },
+    "bar": {
+      "otherWord" : "otherWord",
+      "word" : "word",
+      "nonCommon" : "nonCommon"
+    },
+    "baz": {
+      "otherWord" : "otherWord",
+      "nonCommon" : "nonCommon"
+    }
+  }
+},
+{ 
+  "language" : "abbrevish",
+  "common": {
+    "word" : "w",
+    "otherWord" : "oW",
+    "commonWord" : "commonWord"
+  },
+  "departments" : {
+    "foo" : {
+      "word" : "w",
+      "nonCommon" : "nC"
+    },
+    "bar": {
+      "otherWord" : "oW",
+      "word" : "w",
+      "nonCommon" : "nC"
+    },
+    "baz": {
+      "otherWord" : "oW",
+      "nonCommon" : "nC"
+    }
+  }
+}]
