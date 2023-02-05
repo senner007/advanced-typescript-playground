@@ -62,6 +62,10 @@ type PartialDepartmentKeys<T extends keyof JsonDataDepartments, Keys = departmen
   
 type departmentKeys = PartialDepartmentKeys<keyof JsonDataDepartments>;
 
+type DepartMentKeysInCommon<T extends JsonData, Keys extends departmentKeys = departmentKeys> = Keys extends keyof JsonData['common'] 
+  ? T 
+  : `Error: The folloing department key(s) are/is missing from common:  ${Keys}`
+
 type nonCommonKeys = Exclude<departmentAllKeys, departmentKeys>;
 
 type NonCommonKeysInCommon<T> = T extends keyof JsonData['common'] ? `Error: the key: '${T}' exists in all departments and under common` : JsonData
@@ -70,6 +74,6 @@ type NonCommonKeysInCommon<T> = T extends keyof JsonData['common'] ? `Error: the
 // Lastly we have a type to validate the json
 /*********************************************************************** */
 
-const jsonValidated : objectsAreIdentical<NonCommonKeysInCommon<nonCommonKeys>>[] = jsonData
+const jsonValidated : objectsAreIdentical<DepartMentKeysInCommon<NonCommonKeysInCommon<nonCommonKeys>>>[] = jsonData
 
 
