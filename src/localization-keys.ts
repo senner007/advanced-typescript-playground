@@ -68,12 +68,12 @@ type DepartMentKeysInCommon<T extends JsonData, Keys extends departmentKeys = de
 
 type nonCommonKeys = Exclude<departmentAllKeys, departmentKeys>;
 
-type NonCommonKeysInCommon<T> = T extends keyof JsonData['common'] ? `Error: the key: '${T}' exists in all departments but also under common` : JsonData
+type NonCommonKeysInCommon<T = nonCommonKeys> = T extends keyof JsonData['common'] ? `Error: the key: '${T}' exists in all departments but also under common` : JsonData
 
 /*********************************************************************** */
 // Lastly we have a type to validate the json
 /*********************************************************************** */
 
-const jsonValidated : objectsAreIdentical<DepartMentKeysInCommon<NonCommonKeysInCommon<nonCommonKeys>>>[] = jsonData
+const jsonValidated : objectsAreIdentical<DepartMentKeysInCommon<NonCommonKeysInCommon>>[] = jsonData
 
 
