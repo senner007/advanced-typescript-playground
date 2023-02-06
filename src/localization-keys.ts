@@ -39,7 +39,7 @@ type OptionalPropertiesFoundRecursively<Obj extends object, K extends keyof Obj>
 
 type optionalPropertiesFound = OptionalPropertiesFoundRecursively<JsonData, keyof JsonData>
 
-type objectsAreIdentical<T extends JsonData> = optionalPropertiesFound extends never ? T : optionalPropertiesFound
+type ObjectsIdentical<T extends JsonData> = optionalPropertiesFound extends never ? T : optionalPropertiesFound
 
 /*********************************************************************** */
 // Part 2: Type validate that non-common words exist only in departments and in all departments  
@@ -74,6 +74,6 @@ type NoNonCommonKeysInCommon<T = nonCommonKeys> = T extends keyof JsonData['comm
 // Lastly we have a type to validate the json
 /*********************************************************************** */
 
-const jsonValidated : objectsAreIdentical<DepartMentKeysInCommon<NoNonCommonKeysInCommon>>[] = jsonData
+const jsonValidated : ObjectsIdentical<DepartMentKeysInCommon<NoNonCommonKeysInCommon>>[] = jsonData
 
 
