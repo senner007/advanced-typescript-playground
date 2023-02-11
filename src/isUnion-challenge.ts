@@ -55,7 +55,7 @@ type multipleDistributive = MultipleDistributive<"a" | "b"> // boolean
 /*********************************************************************** */
 // Finally we do the same for the correct isUnion type 
 
-// Here we can see that we do not distrubute over U since it is wrappen in '[]' and is thus not 'naked'
+// Here we can see that we do not distribute over U since it is wrapped in '[]' and is thus not 'naked'
 // Again we can rewrite it into the following
 
 type IsUnionEquals = ("a" extends any ? ["a" | "b"] extends ["a"] ? false : true : false)
