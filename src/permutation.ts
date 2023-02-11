@@ -8,9 +8,16 @@ type Permutation<StringUnionAll, StringUnionMember = StringUnionAll> = [StringUn
     : [];
 
 
+/*********************************************************************** */
+// Examples : 
+/*********************************************************************** */
+
 type permutation = Permutation<"A" | "B" | "C">  // ["A", "B", "C"] | ["A", "C", "B"] | ["B", "A", "C"] | ["B", "C", "A"] | ["C", "A", "B"] | ["C", "B", "A"]
 
-// Explanation:
+/*********************************************************************** */
+// Explanation : 
+/*********************************************************************** */
+
 // The condition "StringUnionMember extends StringUnionAll..." is in fact looping over all union members so that the conditional is first called with "'A' extends T..." then "'B' extends T" and so on.
 // The purpose of the conditional is therefore to loop over all members of the string union, not to evaluate if StringUnionMember extends any
 // Therefore it returns 3 arrays each with a nested union of arrays :
