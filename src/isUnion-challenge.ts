@@ -61,7 +61,7 @@ type MultipleDistributiveIsUnion<T, U = T> = T extends any ? [U] extends [T] ? f
 // Again we can rewrite it into the following
 
 type MultipleDistributiveIsUnionEquals = ("a" extends any ? ["a" | "b"] extends ["a"] ? false : true : false)
-    | ("a" extends any ? ["a" | "b"] extends ["a"] ? false : true : false)
+    | ("b" extends any ? ["a" | "b"] extends ["b"] ? false : true : false)
 
 
 type cases3 = [
