@@ -2,12 +2,6 @@
 // type to verify that the generic parameter is a union
 type IsUnion<T, U = T> = T extends any ? [U] extends [T] ? false : true : false
 
-/*********************************************************************** */
-// Examples : 
-/*********************************************************************** */
-
-type isUnion = IsUnion<"a" | "b"> // true 
-type isNotUnion = IsUnion<"a"> // false
 
 /*********************************************************************** */
 // Explanation : 
@@ -74,4 +68,4 @@ type cases3 = [
     Expect<Equal<MultipleDistributiveIsUnion<"a" | "b">, MultipleDistributiveIsUnionEquals>>, // both returns true
 ]
 
-type multipleDistributiveIsUnionEquals = MultipleDistributiveIsUnion<"a" | "b"> // true
+type isUnion = MultipleDistributiveIsUnion<"a" | "b"> // true
