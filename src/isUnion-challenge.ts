@@ -26,7 +26,7 @@ type SingleDistributive<T> = T extends any ? false : true
 type SingleDistributiveEquals = ("a" extends any ? false : true) | ("b" extends any ? false : true)
 
 type cases1 = [
-    Expect<Equal<SingleDistributive<"a" | "b">, SingleDistributiveEquals>>, // both returns false
+    Expect<Equal<SingleDistributive<"a" | "b">, SingleDistributiveEquals>>
 ]
 
 type singleDistributive = SingleDistributive<"a" | "b"> // false
@@ -45,7 +45,7 @@ type MultipleDistributiveEquals = ("a" extends any ? "a" extends "a" ? false : t
     | ("b" extends any ? "b" extends "b" ? false : true : false)
 
 type cases2 = [
-    Expect<Equal<MultipleDistributive<"a" | "b">, MultipleDistributiveEquals>>, // both returns boolean
+    Expect<Equal<MultipleDistributive<"a" | "b">, MultipleDistributiveEquals>>
 ]
 
 type multipleDistributive = MultipleDistributive<"a" | "b"> // boolean
@@ -65,7 +65,7 @@ type MultipleDistributiveIsUnionEquals = ("a" extends any ? ["a" | "b"] extends 
 
 
 type cases3 = [
-    Expect<Equal<MultipleDistributiveIsUnion<"a" | "b">, MultipleDistributiveIsUnionEquals>>, // both returns true
+    Expect<Equal<MultipleDistributiveIsUnion<"a" | "b">, MultipleDistributiveIsUnionEquals>>
 ]
 
 type isUnion = MultipleDistributiveIsUnion<"a" | "b"> // true
