@@ -55,17 +55,16 @@ type multipleDistributive = MultipleDistributive<"a" | "b"> // boolean
 /*********************************************************************** */
 // Finally we do the same for the correct isUnion type 
 
-type MultipleDistributiveIsUnion<T, U = T> = T extends any ? [U] extends [T] ? false : true : false
-
 // Here we can see that we do not distrubute over U since it is wrappen in '[]' and is thus not 'naked'
 // Again we can rewrite it into the following
 
-type MultipleDistributiveIsUnionEquals = ("a" extends any ? ["a" | "b"] extends ["a"] ? false : true : false)
+type IsUnionEquals = ("a" extends any ? ["a" | "b"] extends ["a"] ? false : true : false)
     | ("b" extends any ? ["a" | "b"] extends ["b"] ? false : true : false)
 
 
 type cases3 = [
-    Expect<Equal<MultipleDistributiveIsUnion<"a" | "b">, MultipleDistributiveIsUnionEquals>>
+    Expect<Equal<IsUnion<"a" | "b">, IsUnionEquals>>
 ]
 
-type isUnion = MultipleDistributiveIsUnion<"a" | "b"> // true
+type isUnion = IsUnion<"a" | "b"> // true
+type isNotUnion = IsUnion<"a"> // false
