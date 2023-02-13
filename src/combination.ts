@@ -8,11 +8,13 @@ type Combination<T extends string[], U = T[number], U1 = U> =
 
 // the condition in type Combination is distributed over the union type that is returned from the T[number] operation 
 // So for the string 'a' the iteration will proceed as follows
-type a = 'a' | `${'a'} ${Combination<[], 'b' |'c'>}`
+type a = 'a' | `${'a'} ${Combination<[], 'b' | 'c'>}`
+// which equals : 
+type a1 = 'a' | `${'a'} ${'b' | `${'b'} ${Combination<[], 'c'>}` | 'c' | `${'c'} ${Combination<[], 'b'>}`}`
+// which equals 
+type a_comb = 'a' | `${'a'} ${'b' | `${'b'} ${'c' | `${'c'} ${never}`}` | 'c' | `${'c'} ${'b' | `${'b'} ${never}`}`}` // "a" | "a b" | "a c" | "a b c" | "a c b"
 
-// for the T[number] resulting in union 'a' | 'b' | 'c', the recursion will run as follows
-type a_comb = 'a' | `${'a'} ${('b' | `${'b'} ${'c' | 'c'}`) | ('c' | `${'c'} ${'b' | 'b'}`)}` //  "a" | "a c" | "a b c" | "a b" | "a c b"
-
+// for the remaining members of the union 'a' | 'b' | 'c', the recursion will run as follows
 type b_comb = 'b' | `${'b'} ${('a' | `${'a'} ${'c' | 'c'}`) | ('c' | `${'c'} ${'a' | 'a'}`)}` // "b c" | "b" | "b a" | "b a c" | "b c a"
 
 type c_comb = 'c' | `${'c'} ${('a' | `${'a'} ${'b' | 'b'}`) | ('b' | `${'b'} ${'a' | 'a'}`)}` // "c" | "c b" | "c a" | "c a b" | "c b a"
