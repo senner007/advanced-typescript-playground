@@ -4,8 +4,8 @@ import type { Equal, Expect } from '@type-challenges/utils'
 type Permutation<StringUnionAll, StringUnionMember = StringUnionAll> = [StringUnionAll] extends [never]
   ? []
   : StringUnionMember extends any
-    ? [StringUnionMember, ...Permutation<Exclude<StringUnionAll, StringUnionMember>>]
-    : [];
+  ? [StringUnionMember, ...Permutation<Exclude<StringUnionAll, StringUnionMember>>]
+  : [];
 
 // tail recursive optimized version
 type PermutationTailRecursive<StringUnionAll, Acc extends any[] = [], StringUnionMember = StringUnionAll> = [StringUnionAll] extends [never]
@@ -15,11 +15,11 @@ type PermutationTailRecursive<StringUnionAll, Acc extends any[] = [], StringUnio
   : [];
 
 // tuple to string permutations
-  type PermutationStrings<T extends string[], U = T[number], Acc extends string= '', U1= U> = [U] extends [never] ?
+type PermutationStrings<U, Acc extends string = '', U1 = U> = [U] extends [never] ?
   Acc :
   U extends string
   // insert an extra space after Acc if Acc not ''
-  ? PermutationStrings<[], Exclude<U1, U>, `${Acc extends '' ? Acc : `${Acc} `}${U}`>
+  ? PermutationStrings<Exclude<U1, U>, `${Acc extends '' ? Acc : `${Acc} `}${U}`>
   : never
 
 
@@ -28,7 +28,7 @@ type PermutationTailRecursive<StringUnionAll, Acc extends any[] = [], StringUnio
 /*********************************************************************** */
 
 type permutation = Permutation<"A" | "B" | "C">  // ["A", "B", "C"] | ["A", "C", "B"] | ["B", "A", "C"] | ["B", "C", "A"] | ["C", "A", "B"] | ["C", "B", "A"]
-type permutationStrings = PermutationStrings<["A" | "B" | "C"]>  // "A B C" | "A C B" | "B A C" | "B C A" | "C A B" | "C B A"
+type permutationStrings = PermutationStrings<"A" | "B" | "C">  // "A B C" | "A C B" | "B A C" | "B C A" | "C A B" | "C B A"
 /*********************************************************************** */
 // Explanation : 
 /*********************************************************************** */
