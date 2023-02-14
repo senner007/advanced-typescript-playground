@@ -14,7 +14,7 @@ type PermutationTailRecursive<StringUnionAll, Acc extends any[] = [], StringUnio
   ? PermutationTailRecursive<Exclude<StringUnionAll, StringUnionMember>, [...Acc, StringUnionMember]>
   : [];
 
-// union to string permutations
+// union to string permutations tail recursive
 type PermutationStrings<U, Acc extends string = '', U1 = U> = [U] extends [never] ?
   Acc :
   U extends string

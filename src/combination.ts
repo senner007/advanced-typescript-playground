@@ -1,9 +1,17 @@
 // expected to be `"foo" | "bar" | "baz" | "foo bar" | "foo bar baz" | "foo baz" | "foo baz bar" | "bar foo" | "bar foo baz" | "bar baz" | "bar baz foo" | "baz foo" | "baz foo bar" | "baz bar" | "baz bar foo"`
-type Keys = Combination<['foo', 'bar', 'baz']>
+type Keys = Combination<["foo" , "bar" , "baz"]>
 
 type Combination<T extends string[], U = T[number], U1 = U> =
   U extends string
   ? U | `${U} ${Combination<[], Exclude<U1, U>>}`
+  : never
+
+// union to string combination tail recursive
+type CombinationTail<U, Acc extends string = '', U1 = U> = [U] extends [never] ?
+  Acc :
+  U extends string
+  // insert an extra space after Acc if Acc not ''
+  ? CombinationTail<Exclude<U1, U>, U  | `${Acc extends '' ? Acc : `${Acc} `}${U}`>
   : never
 
 // the condition in type Combination is distributed over the union type that is returned from the T[number] operation 
@@ -27,6 +35,7 @@ type cases = [
   Expect<Equal<Combination<['foo', 'bar', 'baz']>,
     'foo' | 'bar' | 'baz' | 'foo bar' | 'foo bar baz' | 'foo baz' | 'foo baz bar' | 'bar foo' | 'bar foo baz' | 'bar baz' | 'bar baz foo' | 'baz foo' | 'baz foo bar' | 'baz bar' | 'baz bar foo'>>,
   Expect<Equal<Combination<['a', 'b', 'c']>, a_comb | b_comb | c_comb>>,
+  Expect<Equal<CombinationTail<'a'| 'b' | 'c'>, a_comb | b_comb | c_comb>>
 ]
 
 /* _____________ Further Steps _____________ */
