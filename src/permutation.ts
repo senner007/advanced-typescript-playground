@@ -18,6 +18,7 @@ type PermutationTailRecursive<StringUnionAll, Acc extends any[] = [], StringUnio
   type PermutationStrings<T extends string[], U = T[number], Acc extends string= '', U1= U> = [U] extends [never] ?
   Acc :
   U extends string
+  // insert an extra space after Acc if Acc not ''
   ? PermutationStrings<[], Exclude<U1, U>, `${Acc extends '' ? Acc : `${Acc} `}${U}`>
   : never
 
