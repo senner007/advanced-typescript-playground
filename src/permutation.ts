@@ -14,12 +14,20 @@ type PermutationTailRecursive<StringUnionAll, Acc extends any[] = [], StringUnio
   ? PermutationTailRecursive<Exclude<StringUnionAll, StringUnionMember>, [...Acc, StringUnionMember]>
   : [];
 
+// tuple to string permutations
+  type PermutationStrings<T extends string[], U = T[number], Acc extends string= '', U1= U> = [U] extends [never] ?
+  Acc :
+  U extends string
+  ? PermutationStrings<[], Exclude<U1, U>, `${Acc extends '' ? Acc : `${Acc} `}${U}`>
+  : never
+
+
 /*********************************************************************** */
 // Examples : 
 /*********************************************************************** */
 
 type permutation = Permutation<"A" | "B" | "C">  // ["A", "B", "C"] | ["A", "C", "B"] | ["B", "A", "C"] | ["B", "C", "A"] | ["C", "A", "B"] | ["C", "B", "A"]
-
+type permutationStrings = PermutationStrings<["A" | "B" | "C"]>  // "A B C" | "A C B" | "B A C" | "B C A" | "C A B" | "C B A"
 /*********************************************************************** */
 // Explanation : 
 /*********************************************************************** */
@@ -35,6 +43,7 @@ type permutationEquivalence =
 type cases = [
   Expect<Equal<permutation, permutationEquivalence>>,
   Expect<Equal<permutation, PermutationTailRecursive<"A" | "B" | "C">>>,
+  Expect<Equal<permutationStrings, "A B C" | "A C B" | "B A C" | "B C A" | "C A B" | "C B A">>,
 ]
 
 
