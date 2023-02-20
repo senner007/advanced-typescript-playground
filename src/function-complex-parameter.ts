@@ -7,8 +7,6 @@ type FirstAndLast<TArr_A extends readonly any[], TArr_B extends readonly any[]> 
     : never
     : never
 
-type t = FirstAndLast<readonly [1, 2, 3], readonly [1, 2, 1]>
-
 function func<
     TArr_A extends readonly any[],
     TArr_B extends readonly any[],
